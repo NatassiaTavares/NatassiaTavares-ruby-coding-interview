@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-2">
+    <h1>Welcome to Beon Twitter</h1>
+    <p> See what’s happening in the world right now</p>
+    <% unless user_signed_in? %>
+      <%= link_to 'Sign up', new_user_registration_path, class: "btn btn-primary" %>
+      <%= link_to 'Sign in', new_user_session_path, class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+
+  <div class="col-md-10 mt-5">
+    <div class="tweets">
+      <% @tweets.each do |tweet| %>
+        <div class="card my-2">
+          <div class="card-header">
+            <div class="col-md-6">
+              Author:
+              <%= tweet.user.username %>
+
+              <% if tweet.user.company %>
+                | Organization: <%= tweet.user.company.name %>
+              <% end %>
+            </div>
+            <div class="col-md-6">
+              <small><%= time_ago_in_words(tweet.created_at) %></small>
+            </div>
+          </div>
+          <div class="card-body">
+            <%= tweet.body %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -7,12 +7,17 @@ module Api
     def create
       return head :bad_request if params[:body].blank? || params[:user_id].blank?
 
-      @tweet = Tweet.create!(
-          user_id: params[:user_id],
-          body: params[:body]
-        )
+      @tweet = Tweet.new(
+        user_id: params[:user_id],
+        body: params[:body]
+      )
 
-      render json: @tweet
+      if @tweet.valid?
+        @tweet.save
+        render json: @tweet
+      else
+        render :json => { :errors => @tweet.errors.full_messages }, :status => 422
+      end
     end
 
     def index
